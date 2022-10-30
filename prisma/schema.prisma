@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextIndex"]
 }
 
 datasource db {
@@ -47,6 +48,7 @@ model User {
     sessions      Session[]
     Story         Story[]
     Votes         Votes[]
+    Epic          Epic[]
 }
 
 model VerificationToken {
@@ -62,9 +64,15 @@ model Epic {
     name        String
     description String      @db.Text
     status      StoryStatus @default(TODO)
-    createdAt   DateTime    @default(now())
-    updatedAt   DateTime    @updatedAt
-    stories     Story[]
+
+    createdById String
+    createdBy   User   @relation(fields: [createdById], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+    stories   Story[]
+
+    @@index([createdById, status, updatedAt(sort: Desc)])
 }
 
 model Story {
@@ -80,8 +88,10 @@ model Story {
     createdBy    User        @relation(fields: [createdById], references: [id])
 
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime @default(now()) @updatedAt
     Votes     Votes[]
+
+    @@index([createdById, status, updatedAt(sort: Desc)])
 }
 
 model Votes {
@@ -94,7 +104,9 @@ model Votes {
     voterName String?
     comments  String   @db.Text
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime @default(now()) @updatedAt
+
+    @@index([userId, updatedAt(sort: Desc)])
 }
 
 enum StoryStatus {

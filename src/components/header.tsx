@@ -8,19 +8,19 @@ const Header: React.FC = () => {
   return (
     <header>
       <Flex
-        direction="row"
+        direction={["column", "column", "row"]}
         paddingTop="2rem"
         paddingBottom="1rem"
         px="4rem"
-        gap={8}
+        gap={[2, 2, 8]}
         position="fixed"
-        minHeight="3rem"
-        maxHeight="6rem"
+        minHeight="2rem"
+        maxHeight="4rem"
         width="100vw"
         alignItems="center"
       >
         <Text>Planning Poker</Text>
-        {sessionData && <Text>Your cards</Text>}
+        {sessionData ? <Text>All works</Text> : null}
         <Spacer />
         <Flex direction="row">
           <Button onClick={authHandler}>{authText}</Button>

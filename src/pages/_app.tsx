@@ -16,7 +16,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ChakraProvider>
         <Header />
-        <Flex paddingTop="8rem" width="100%" paddingX="4rem" direction="column">
+        <Flex
+          paddingTop={["12rem", "12rem", "8rem"]}
+          width="100%"
+          paddingX="4rem"
+          direction="column"
+        >
           <Component {...pageProps} />
         </Flex>
       </ChakraProvider>
